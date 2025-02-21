@@ -2,6 +2,7 @@ import { CardEntityType } from "../../models/entities/card.entity";
 import {
   STORAGE_EVENT_KEY,
   STORAGE_KEY,
+  StorageCardEntityType,
   StorageEntityType,
 } from "../../models/entities/storage.entity";
 import { generateRandomID } from "../../utils/uid";
@@ -125,6 +126,61 @@ export function addCardCounter(
     Math.min(add ? card.count + 1 : card.count - 1, 999),
     0
   );
+
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(storage));
+
+  // Fire event for listeners, to re-hydrate components
+  document.dispatchEvent(new Event(STORAGE_EVENT_KEY));
+}
+
+export function modifyCards(
+  groupId: StorageEntityType["groups"][number]["id"],
+  ...cards: StorageCardEntityType[]
+) {
+  const storage = extractStorage();
+
+  let group = storage.groups.find((each) => each.id === groupId);
+
+  if (!group) {
+    return;
+  }
+
+  group.cards = cards;
+
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(storage));
+
+  // Fire event for listeners, to re-hydrate components
+  document.dispatchEvent(new Event(STORAGE_EVENT_KEY));
+}
+
+export function modifyGroupName(
+  groupId: StorageEntityType["groups"][number]["id"],
+  name: StorageEntityType["groups"][number]["name"]
+) {
+  const storage = extractStorage();
+
+  let group = storage.groups.find((each) => each.id === groupId);
+
+  if (!group) {
+    return;
+  }
+
+  group.name = name;
+
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(storage));
+
+  // Fire event for listeners, to re-hydrate components
+  document.dispatchEvent(new Event(STORAGE_EVENT_KEY));
+}
+
+export function createGroup() {
+  const storage = extractStorage();
+
+  storage.groups.push({
+    id: generateRandomID(),
+    cards: [],
+    name: "Untitled",
+  });
 
   localStorage.setItem(STORAGE_KEY, JSON.stringify(storage));
 

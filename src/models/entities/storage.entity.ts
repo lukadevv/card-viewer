@@ -2,6 +2,7 @@ import { array, InferType, number, object, string } from "yup";
 import { CardCategory, CardType, IdType } from "./card.entity";
 
 export type StorageEntityType = InferType<typeof StorageEntity>;
+export type StorageCardEntityType = InferType<typeof CardEntityCountEntity>;
 
 export const CardEntityCountEntity = object({
   id: string<IdType>().required(),
@@ -17,7 +18,7 @@ export const CardEntityCountEntity = object({
 export const StorageEntity = object({
   groups: array(
     object({
-      id: string().length(128).required(),
+      id: string().length(64).required(),
       name: string().required(),
       cards: array(CardEntityCountEntity).required(),
     })
