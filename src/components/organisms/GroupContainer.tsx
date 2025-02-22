@@ -119,7 +119,11 @@ export function GroupContainer({
           ) : (
             <p className={"text-xl"}>{name}</p>
           )}
-          <Button variant={"outline"} onClick={() => setNameEdit(!nameEdit)}>
+          <Button
+            variant={"outline"}
+            onClick={() => setNameEdit(!nameEdit)}
+            aria-label={"Edit name"}
+          >
             <Edit3 />
           </Button>
           <Button
@@ -131,6 +135,7 @@ export function GroupContainer({
             }}
             variant={"secondary"}
             onClick={() => removeGroup(id)}
+            aria-label={"Remove group"}
           >
             <Trash />
           </Button>
@@ -197,6 +202,7 @@ export function GroupContainer({
                     top: "100%",
                   }}
                   onDragEnter={() => setRemove(true)}
+                  aria-label={"Remove card"}
                 >
                   <Trash />
                 </Button>
@@ -231,6 +237,7 @@ export function GroupContainer({
               );
             }}
             disabled={cards.length < 1}
+            aria-label={"Open viewer"}
           >
             view
           </Button>
@@ -254,13 +261,15 @@ function ColumnsButton({
         <Button
           disabled={columns < 2}
           onClick={() => addGroupColumn(groupId, false)}
+          aria-label={"Decrease columns"}
         >
           -
         </Button>
-        <Button>{columns}</Button>
+        <Button aria-label={"Total columns"}>{columns}</Button>
         <Button
           disabled={columns > 64}
           onClick={() => addGroupColumn(groupId, true)}
+          aria-label={"Increase columns"}
         >
           +
         </Button>
@@ -288,6 +297,7 @@ function BackgroundColor({
             style={{
               backgroundColor: background,
             }}
+            aria-label={"Change color"}
           >
             <PipetteIcon
               style={{
@@ -320,6 +330,7 @@ function CounterBackgroundColor({
             style={{
               backgroundColor: counterColor,
             }}
+            aria-label={"Change color"}
           >
             <PipetteIcon
               style={{
@@ -352,6 +363,7 @@ function CounterColor({
             style={{
               backgroundColor: counterColor,
             }}
+            aria-label={"Change color"}
           >
             <PipetteIcon
               style={{

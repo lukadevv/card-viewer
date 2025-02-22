@@ -115,7 +115,11 @@ const ColorPicker: React.FC<TColorPicker> = ({
               />
             </div>
             {handleAdd && (
-              <Button className="w-full gap-0" onClick={() => handleAdd(value)}>
+              <Button
+                className="w-full gap-0"
+                onClick={() => handleAdd(value)}
+                aria-label={"Change color"}
+              >
                 <Plus className="h-4 md:h-[1.2vw] aspect-square" />
                 Add New Colour
               </Button>

@@ -39,6 +39,7 @@ export function AddCardButton({
             width,
             height,
           }}
+          aria-label={"Open add card menu"}
         >
           <Plus size={64} />
         </Button>
@@ -79,6 +80,7 @@ export function AddCardButton({
               setCard(undefined);
               setOpen(false);
             }}
+            aria-label={"Close menu"}
           >
             Close
           </Button>
@@ -95,6 +97,7 @@ export function AddCardButton({
               setOpen(false);
               setCard(undefined);
             }}
+            aria-label={"Add selected card"}
           >
             Add
           </Button>

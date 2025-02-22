@@ -62,6 +62,7 @@ export function CardsCombobox({
           role="combobox"
           aria-expanded={open}
           className="w-96 justify-between"
+          aria-label={"Search cards"}
         >
           {value
             ? availableSearchValues.find((each) => each.value === value)?.label

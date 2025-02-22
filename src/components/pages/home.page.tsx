@@ -23,6 +23,7 @@ export function HomePage() {
           animationDuration: "150s",
         }}
         class={"fixed left-0 top-0 object-cover -z-10 animate-pulse"}
+        alt={"Card image"}
       />
       <div>
         <div className={"flex flex-col gap-4"}>
@@ -36,6 +37,7 @@ export function HomePage() {
             size={"lg"}
             className={"h-24 w-24"}
             onClick={() => createGroup()}
+            aria-label={"Create new group"}
           >
             <Plus />
           </Button>

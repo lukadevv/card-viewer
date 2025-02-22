@@ -41,6 +41,7 @@ export function CardCounter({
             e.preventDefault();
             onClick("CONTEXT");
           }}
+          aria-label={"Increase/Decrease counter"}
         >
           <img
             src={appendUrlPath(iconPath)}
@@ -55,6 +56,7 @@ export function CardCounter({
             className={
               "border-solid border-2 border-slate-500 pointer-events-none select-none"
             }
+            alt={"Card image"}
           />
           <div
             className={

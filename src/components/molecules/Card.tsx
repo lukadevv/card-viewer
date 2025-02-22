@@ -20,6 +20,7 @@ export function Card({
       <Button
         className={"m-0 p-0 h-fit hover:opacity-80 relative"}
         variant={"ghost"}
+        aria-label={"Card"}
       >
         <img
           src={appendUrlPath(iconPath)}
@@ -29,6 +30,7 @@ export function Card({
           className={
             "border-solid border-2 border-slate-500 pointer-events-none select-none"
           }
+          alt={"Card image"}
         />
       </Button>
     </div>
