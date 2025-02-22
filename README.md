@@ -2,6 +2,8 @@
 
 **Card Viewer** is an intuitive and efficient **card counter** for Yu-Gi-Oh! Forbidden Memories.  
 
+<a href="https://lukadevv.github.io/card-viewer/">Website - App</a>
+
 ## 🛠️ How to Use  
 1. **Edit Default Group** – Start by modifying the default group or create a new one.  
 2. **Add Cards** ➕ – Use the **“+”** button to add new cards.  
@@ -9,7 +11,8 @@
 4. **Reorder Cards** 🔄 – Drag a card over another to swap their positions.  
 5. **Customize Layout** 🎨 – Adjust the number of columns and color themes.  
 6. **Create New Groups** 📁 – Use the **“+”** button at the bottom to add more groups.  
-7. **Activate Counter Mode** 👀 – Press **"VIEW"** to open the card counter in a pop-up window.  
+7. **Activate Counter Mode** 👀 – Press **"VIEW"** to open the card counter in a pop-up window.
+8. **Count** - Click (or tap) to increase by one, and right-click (or long tap) to decrease by one
 
 ## 🎥 Capture in OBS  
 
