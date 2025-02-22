@@ -205,7 +205,7 @@ export function GroupContainer({
           </div>
         </div>
         <div>
-          <div class={"relative gap-2 p-4 bg-slate-00 mt-2 rounded-2xl"}>
+          <div class={"relative gap-2 p-4 bg-slate-700 mt-2 rounded-2xl"}>
             <div className={"w-full flex flex-col gap-2"}>
               <ColumnsButton groupId={id} columns={columns} />
               <BackgroundColor groupId={id} background={background} />
