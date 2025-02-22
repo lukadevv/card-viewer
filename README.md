@@ -25,15 +25,14 @@ Easily integrate **Card Viewer** into your live streams or recordings using **OB
 2. **Select the Counter Window**  
    - Choose the pop-up window created by the **VIEW** button.  
    - Ensure the correct window is selected from the dropdown list.
-![image](https://github.com/user-attachments/assets/a7b33494-b636-407b-a7ab-2207233a7d0a)
+   - ![image](https://github.com/user-attachments/assets/a7b33494-b636-407b-a7ab-2207233a7d0a)
 
 3. **Crop & Adjust the Capture**  
    - Hold **Alt** while dragging the edges to crop unwanted areas.  
    - Resize and position the counter to fit your overlay.
-![image](https://github.com/user-attachments/assets/11d52d92-b172-4897-bf52-e353c250be05)
+   - ![image](https://github.com/user-attachments/assets/11d52d92-b172-4897-bf52-e353c250be05)
 
-
-4. **Optimize for Streaming**
+4. **Remove background**
    - Set background color as "#00ff00"
-   - Adjust filters (like **Color Correction**) for better visibility.
+   - Add **Chrome Key** filter.
 ![image](https://github.com/user-attachments/assets/1e141100-b1cd-4465-b5c1-ba83f4dc1bdc)
