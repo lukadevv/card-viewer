@@ -1,11 +1,11 @@
 import "./app.css";
-import { HomePage } from "./components/pages/home.page";
 import { CoreProvider } from "./contexts/core.context";
+import { Routes } from "./routes/Routes";
 
 export function App() {
   return (
     <CoreProvider>
-      <HomePage />
+      <Routes />
     </CoreProvider>
   );
 }

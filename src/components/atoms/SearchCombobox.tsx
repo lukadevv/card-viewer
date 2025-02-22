@@ -61,7 +61,7 @@ export function CardsCombobox({
           variant="secondary"
           role="combobox"
           aria-expanded={open}
-          className="w-full justify-between"
+          className="w-96 justify-between"
         >
           {value
             ? availableSearchValues.find((each) => each.value === value)?.label
@@ -69,7 +69,7 @@ export function CardsCombobox({
           <ChevronsUpDown className="opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-full p-0">
+      <PopoverContent className="w-96 p-0">
         <Command>
           <CommandInput placeholder="Search card..." className="h-9" />
           <CommandList>

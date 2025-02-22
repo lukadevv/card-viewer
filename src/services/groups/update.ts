@@ -17,24 +17,16 @@ export function addCardsIntoGroup(
   let group = storage.groups.find((each) => each.id === groupId);
 
   if (!group) {
-    // Create a new group
-    group = {
-      id: generateRandomID(),
-      name: "Nameless",
-      cards: cards.map((each) => ({
-        ...each,
-        count: 0,
-      })),
-    };
-  } else {
-    // Add cards
-    group.cards.push(
-      ...cards.map((each) => ({
-        ...each,
-        count: 0,
-      }))
-    );
+    return;
   }
+  
+  // Add cards
+  group.cards.push(
+    ...cards.map((each) => ({
+      ...each,
+      count: 0,
+    }))
+  );
 
   localStorage.setItem(STORAGE_KEY, JSON.stringify(storage));
 
@@ -180,7 +172,95 @@ export function createGroup() {
     id: generateRandomID(),
     cards: [],
     name: "Untitled",
+    display: {
+      columns: 1,
+      background: "#000000",
+      counterBackground: "#ffffff",
+      counterColor: "#000000",
+    },
   });
+
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(storage));
+
+  // Fire event for listeners, to re-hydrate components
+  document.dispatchEvent(new Event(STORAGE_EVENT_KEY));
+}
+
+export function addGroupColumn(
+  groupId: StorageEntityType["groups"][number]["id"],
+  add: boolean
+) {
+  const storage = extractStorage();
+
+  let group = storage.groups.find((each) => each.id === groupId);
+
+  if (!group) {
+    return;
+  }
+
+  const total = add ? group.display.columns + 1 : group.display.columns - 1;
+
+  group.display.columns = Math.max(Math.min(total, 64), 1);
+
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(storage));
+
+  // Fire event for listeners, to re-hydrate components
+  document.dispatchEvent(new Event(STORAGE_EVENT_KEY));
+}
+
+export function setGroupBackground(
+  groupId: StorageEntityType["groups"][number]["id"],
+  color: StorageEntityType["groups"][number]["display"]["background"]
+) {
+  const storage = extractStorage();
+
+  let group = storage.groups.find((each) => each.id === groupId);
+
+  if (!group) {
+    return;
+  }
+
+  group.display.background = color;
+
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(storage));
+
+  // Fire event for listeners, to re-hydrate components
+  document.dispatchEvent(new Event(STORAGE_EVENT_KEY));
+}
+
+export function setGroupCounterBackground(
+  groupId: StorageEntityType["groups"][number]["id"],
+  color: StorageEntityType["groups"][number]["display"]["counterBackground"]
+) {
+  const storage = extractStorage();
+
+  let group = storage.groups.find((each) => each.id === groupId);
+
+  if (!group) {
+    return;
+  }
+
+  group.display.counterBackground = color;
+
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(storage));
+
+  // Fire event for listeners, to re-hydrate components
+  document.dispatchEvent(new Event(STORAGE_EVENT_KEY));
+}
+
+export function setGroupCounterColor(
+  groupId: StorageEntityType["groups"][number]["id"],
+  color: StorageEntityType["groups"][number]["display"]["counterColor"]
+) {
+  const storage = extractStorage();
+
+  let group = storage.groups.find((each) => each.id === groupId);
+
+  if (!group) {
+    return;
+  }
+
+  group.display.counterColor = color;
 
   localStorage.setItem(STORAGE_KEY, JSON.stringify(storage));
 

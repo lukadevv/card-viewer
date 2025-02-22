@@ -76,6 +76,12 @@ function initStorage() {
             count: 0,
           },
         ],
+        display: {
+          columns: 3,
+          background: "#000000",
+          counterBackground: "#ffffff",
+          counterColor: "#000000",
+        },
       },
     ],
   };

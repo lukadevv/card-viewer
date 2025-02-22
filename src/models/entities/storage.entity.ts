@@ -21,6 +21,12 @@ export const StorageEntity = object({
       id: string().length(64).required(),
       name: string().required(),
       cards: array(CardEntityCountEntity).required(),
+      display: object({
+        columns: number().min(1).max(64).required(),
+        background: string().required(),
+        counterBackground: string().required(),
+        counterColor: string().required(),
+      }).required(),
     })
   ).default([]),
 }).required();

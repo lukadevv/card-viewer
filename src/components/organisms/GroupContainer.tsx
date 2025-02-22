@@ -1,4 +1,4 @@
-import { Card } from "../molecules/Card";
+import { Card, SIZE } from "../molecules/Card";
 import { AddCardButton } from "../molecules/AddCardButton";
 import {
   StorageCardEntityType,
@@ -7,23 +7,40 @@ import {
 import { useCallback, useRef, useState } from "preact/hooks";
 import {
   addCardsIntoGroup,
+  addGroupColumn,
   modifyCards,
   modifyGroupName,
   removeCardsFromGroup,
   removeGroup,
+  setGroupBackground,
+  setGroupCounterBackground,
+  setGroupCounterColor,
 } from "../../services/groups/update";
 import { CardEntityType } from "../../models/entities/card.entity";
-import { Card as UiCard, CardHeader, CardTitle } from "../ui/card";
-import { Edit3, Trash } from "lucide-react";
+import {
+  Card as UiCard,
+  CardHeader,
+  CardTitle,
+  CardContent,
+  CardFooter,
+} from "../ui/card";
+import { Edit3, PipetteIcon, Trash } from "lucide-react";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
+import { appendUrlPath } from "../../utils/path";
+import ColorPicker from "../ui/color-picker";
 
 export function GroupContainer({
-  group: { id, name, cards },
+  group: {
+    id,
+    name,
+    cards,
+    display: { columns, background, counterBackground, counterColor },
+  },
 }: {
   group: StorageEntityType["groups"][number];
 }) {
-  const [width, height] = [128, 120];
+  const [width, height] = SIZE;
 
   const dragCard = useRef<number>(-1);
   const draggedOverCard = useRef<number>(-1);
@@ -73,10 +90,10 @@ export function GroupContainer({
             <Edit3 />
           </Button>
           <Button
-            className={"absolute p-5"}
+            className={"absolute p-5 h-full"}
             style={{
               left: "100%",
-              transform: "translate(-100%,-100%)",
+              transform: "translate(-100%,-75%)",
               top: "50%",
             }}
             variant={"secondary"}
@@ -86,68 +103,231 @@ export function GroupContainer({
           </Button>
         </CardTitle>
       </CardHeader>
-      <div
-        class={
-          "relative flex gap-2 flex-wrap p-4 pb-18 bg-slate-400 m-6 mt-2 rounded-2xl"
-        }
-      >
-        {cards.map((each, index) => (
-          <Card
-            key={each.id}
-            card={each}
-            size={{
-              width,
-              height,
-            }}
-            containerProps={{
-              draggable: true,
-              onDragStart: () => {
-                dragCard.current = index;
-                setDrag(true);
-              },
-              onDragEnter: () => (draggedOverCard.current = index),
-              onDragEnd: () => {
-                if (remove) {
-                  removeCardsFromGroup(id, cards[dragCard.current].id);
+      <CardContent className={"flex flex-col gap-4"}>
+        <div>
+          <div class={"relative gap-2 p-4 pb-18 mt-2 rounded-2xl"}>
+            <div
+              className={`grid w-fit gap-1 m-auto`}
+              style={{
+                gridTemplateColumns: Array(columns).fill("1fr").join(" "),
+              }}
+            >
+              {cards.map((each, index) => (
+                <Card
+                  key={each.id}
+                  card={each}
+                  size={{
+                    width,
+                    height,
+                  }}
+                  containerProps={{
+                    draggable: true,
+                    onDragStart: () => {
+                      dragCard.current = index;
+                      setDrag(true);
+                    },
+                    onDragEnter: () => (draggedOverCard.current = index),
+                    onDragEnd: () => {
+                      if (remove) {
+                        removeCardsFromGroup(id, cards[dragCard.current].id);
 
-                  setRemove(false);
-                  setDrag(false);
-                  return;
-                }
+                        setRemove(false);
+                        setDrag(false);
+                        return;
+                      }
 
-                handleSort();
-              },
-              onDragOver: (e) => e.preventDefault(),
-              style: {
-                width,
-                height,
-              },
-            }}
-          />
-        ))}
-        <AddCardButton
-          addCard={addCard}
-          size={{
-            width,
-            height,
-          }}
-          selectedCards={cards.map((card) => card.name)}
-        />
-        {isDrag && (
+                      handleSort();
+                    },
+                    onDragOver: (e) => e.preventDefault(),
+                    style: {
+                      width,
+                      height,
+                    },
+                  }}
+                />
+              ))}
+              <AddCardButton
+                addCard={addCard}
+                size={{
+                  width,
+                  height,
+                }}
+                selectedCards={cards.map((card) => card.name)}
+              />
+              {isDrag && (
+                <Button
+                  variant={"destructive"}
+                  className={"p-6 absolute"}
+                  style={{
+                    transform: "translate(-50%, -115%)",
+                    left: "50%",
+                    top: "100%",
+                  }}
+                  onDragEnter={() => setRemove(true)}
+                >
+                  <Trash />
+                </Button>
+              )}
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class={"relative gap-2 p-4 bg-slate-900 mt-2 rounded-2xl"}>
+            <div className={"w-full flex flex-col gap-2"}>
+              <ColumnsButton groupId={id} columns={columns} />
+              <BackgroundColor groupId={id} background={background} />
+              <CounterBackgroundColor
+                groupId={id}
+                counterColor={counterBackground}
+              />
+              <CounterColor groupId={id} counterColor={counterColor} />
+            </div>
+          </div>
+        </div>
+        <CardFooter className={"p-0"}>
           <Button
-            variant={"destructive"}
-            className={"p-6 absolute"}
-            style={{
-              transform: "translate(-50%, -115%)",
-              left: "50%",
-              top: "100%",
+            variant={"secondary"}
+            className={"w-full uppercase"}
+            onClick={() => {
+              window.open(
+                appendUrlPath(`/view/${id}`),
+                "_blank",
+                `menubar=no,toolbar=no,location=no,status=no,resizable=no,scrollbars=no,fullscreen=no,width=${
+                  SIZE[0] * columns
+                },height=${SIZE[1] * Math.ceil(cards.length / columns)}`
+              );
             }}
-            onDragEnter={() => setRemove(true)}
+            disabled={cards.length < 1}
           >
-            <Trash />
+            view
           </Button>
-        )}
-      </div>
+        </CardFooter>
+      </CardContent>
     </UiCard>
+  );
+}
+
+function ColumnsButton({
+  groupId,
+  columns,
+}: {
+  groupId: StorageEntityType["groups"][number]["id"];
+  columns: number;
+}) {
+  return (
+    <div className={"flex gap-4 items-center justify-between"}>
+      <p>Columns</p>
+      <div className={"flex gap-0.5"}>
+        <Button
+          disabled={columns < 2}
+          onClick={() => addGroupColumn(groupId, false)}
+        >
+          -
+        </Button>
+        <Button>{columns}</Button>
+        <Button
+          disabled={columns > 64}
+          onClick={() => addGroupColumn(groupId, true)}
+        >
+          +
+        </Button>
+      </div>
+    </div>
+  );
+}
+
+function BackgroundColor({
+  groupId,
+  background,
+}: Pick<StorageEntityType["groups"][number]["display"], "background"> & {
+  groupId: StorageEntityType["groups"][number]["id"];
+}) {
+  return (
+    <div className={"flex gap-4 items-center justify-between"}>
+      <p>Background</p>
+      <div className={"flex gap-0.5"}>
+        <ColorPicker
+          onChange={(value) => setGroupBackground(groupId, value)}
+          value={background}
+        >
+          <Button
+            variant={"secondary"}
+            style={{
+              backgroundColor: background,
+            }}
+          >
+            <PipetteIcon
+              style={{
+                color: "lightgray",
+              }}
+            />
+          </Button>
+        </ColorPicker>
+      </div>
+    </div>
+  );
+}
+
+function CounterBackgroundColor({
+  groupId,
+  counterColor,
+}: Pick<StorageEntityType["groups"][number]["display"], "counterColor"> & {
+  groupId: StorageEntityType["groups"][number]["id"];
+}) {
+  return (
+    <div className={"flex gap-4 items-center justify-between"}>
+      <p>Counter background</p>
+      <div className={"flex gap-0.5"}>
+        <ColorPicker
+          onChange={(value) => setGroupCounterBackground(groupId, value)}
+          value={counterColor}
+        >
+          <Button
+            variant={"secondary"}
+            style={{
+              backgroundColor: counterColor,
+            }}
+          >
+            <PipetteIcon
+              style={{
+                color: "lightgray",
+              }}
+            />
+          </Button>
+        </ColorPicker>
+      </div>
+    </div>
+  );
+}
+
+function CounterColor({
+  groupId,
+  counterColor,
+}: Pick<StorageEntityType["groups"][number]["display"], "counterColor"> & {
+  groupId: StorageEntityType["groups"][number]["id"];
+}) {
+  return (
+    <div className={"flex gap-4 items-center justify-between"}>
+      <p>Counter color</p>
+      <div className={"flex gap-0.5"}>
+        <ColorPicker
+          onChange={(value) => setGroupCounterColor(groupId, value)}
+          value={counterColor}
+        >
+          <Button
+            variant={"secondary"}
+            style={{
+              backgroundColor: counterColor,
+            }}
+          >
+            <PipetteIcon
+              style={{
+                color: "lightgray",
+              }}
+            />
+          </Button>
+        </ColorPicker>
+      </div>
+    </div>
   );
 }

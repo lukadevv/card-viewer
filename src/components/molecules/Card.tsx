@@ -34,3 +34,5 @@ export function Card({
     </div>
   );
 }
+
+export const SIZE = [102 * 1.2, 96 * 1.2];

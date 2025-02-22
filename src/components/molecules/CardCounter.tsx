@@ -6,24 +6,24 @@ import {
 import { appendUrlPath } from "../../utils/path";
 import { Button } from "../ui/button";
 import { addCardCounter } from "../../services/groups/update";
+import { SIZE } from "./Card";
 
 export function CardCounter({
-  groupId,
+  group,
   card: { id, iconPath, count },
-  size,
 }: {
-  groupId: StorageEntityType["groups"][number]["id"];
+  group: StorageEntityType["groups"][number];
   card: StorageCardEntityType;
-  size: number;
 }) {
-  const [width, height] = [size, size];
-
+  const groupId = group.id;
   const onClick = useCallback(
     (click: "CLICK" | "CONTEXT") => {
       addCardCounter(groupId, id, click === "CLICK");
     },
     [addCardCounter, groupId, id]
   );
+
+  const [width, height] = SIZE;
 
   return (
     <div>
@@ -44,30 +44,38 @@ export function CardCounter({
         >
           <img
             src={appendUrlPath(iconPath)}
-            height={height}
             width={width}
-            style={{ objectFit: "cover", height, width, borderRadius: "5px" }}
+            height={height}
+            style={{
+              objectFit: "cover",
+              width,
+              height,
+              borderRadius: "5px",
+            }}
             className={
               "border-solid border-2 border-slate-500 pointer-events-none select-none"
             }
           />
           <div
             className={
-              "bg-slate-200 flex items-center justify-center w-fit px-2 border-1 border-slate-500 absolute"
+              "flex items-center justify-center w-fit px-2 border-1 border-slate-500 absolute"
             }
             style={{
               left: "100%",
               top: "100%",
               transform: "translate(-100%,-100%)",
+              background: group.display.counterBackground,
             }}
           >
             <p
-              className={"text-4xl font-bold"}
+              className={""}
               style={{
-                fontSize: `${Math.max(15, Math.min(size * 0.2, 52))}px`,
+                fontSize: `${Math.max(15, Math.min(width * 0.2, 52))}px`,
                 padding: 0,
                 margin: 0,
                 minWidth: 0,
+                color: group.display.counterColor,
+                fontFamily: `Atkinson Hyperlegible Mono`,
               }}
             >
               {count}

@@ -1,14 +1,21 @@
+html,
 body {
-  background: url(/background/background.webp);
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  box-sizing: border-box;
+
+  background: url(/background.webp);
   background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;
-  min-height: 100vh;
-  backdrop-filter: brightness(0.5) blur(6px);
+  background-attachment: fixed;
+
+  font-family: "DM Sans", serif;
 }
 
 main {
-  max-width: 1440px;
+  max-width: 1140px;
   margin: auto;
   padding: 25px;
 }
