@@ -45,7 +45,7 @@ const ButtonAnchor = React.forwardRef<HTMLAnchorElement, AnchorProps>(
     return (
       <Comp
         className={cn(buttonVariants({ variant, size, className }))}
-        ref={ref}
+        ref={ref as any}
         aria-label="Button link"
         {...props}
       />
