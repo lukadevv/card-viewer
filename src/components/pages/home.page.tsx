@@ -3,6 +3,8 @@ import { useStorage } from "../../hooks/storage.hook";
 import { GroupContainer } from "../organisms/GroupContainer";
 import { Button } from "../ui/button";
 import { createGroup } from "../../services/groups/update";
+import { Footer } from "../organisms/Footer";
+import { appendUrlPath } from "../../utils/path";
 
 export function HomePage() {
   const {
@@ -11,6 +13,17 @@ export function HomePage() {
 
   return (
     <main>
+      <img
+        src={appendUrlPath("/background.webp")}
+        width={"100vw"}
+        height={"100vh"}
+        style={{
+          width: "100vw",
+          height: "100vh",
+          animationDuration: "150s",
+        }}
+        class={"fixed left-0 top-0 object-cover -z-10 animate-pulse"}
+      />
       <div>
         <div className={"flex flex-col gap-4"}>
           {groups.map((each) => (
@@ -28,6 +41,7 @@ export function HomePage() {
           </Button>
         </div>
       </div>
+      <Footer />
     </main>
   );
 }

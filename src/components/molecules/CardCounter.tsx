@@ -29,8 +29,8 @@ export function CardCounter({
     <div>
       <div
         style={{
-          height,
           width,
+          height,
         }}
       >
         <Button

@@ -4,7 +4,7 @@ import {
   StorageCardEntityType,
   StorageEntityType,
 } from "../../models/entities/storage.entity";
-import { useCallback, useRef, useState } from "preact/hooks";
+import { useCallback, useEffect, useRef, useState } from "preact/hooks";
 import {
   addCardsIntoGroup,
   addGroupColumn,
@@ -29,6 +29,7 @@ import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { appendUrlPath } from "../../utils/path";
 import ColorPicker from "../ui/color-picker";
+import { useWindowSize } from "../../hooks/window.hook";
 
 export function GroupContainer({
   group: {
@@ -40,13 +41,20 @@ export function GroupContainer({
 }: {
   group: StorageEntityType["groups"][number];
 }) {
-  const [width, height] = SIZE;
+  const [{ width, height }, setCardSize] = useState<{
+    width: number;
+    height: number;
+  }>({
+    width: SIZE[0],
+    height: SIZE[1],
+  });
 
   const dragCard = useRef<number>(-1);
   const draggedOverCard = useRef<number>(-1);
   const [isDrag, setDrag] = useState<boolean>(false);
   const [remove, setRemove] = useState<boolean>(false);
   const [nameEdit, setNameEdit] = useState<boolean>(false);
+  const size = useWindowSize();
 
   const handleSort = useCallback(() => {
     const cardsClone: StorageCardEntityType[] = [...cards];
@@ -69,11 +77,36 @@ export function GroupContainer({
     [addCardsIntoGroup, id]
   );
 
+  useEffect(() => {
+    if (size.width <= 345) {
+      const scaleFactor = Math.max(0.005, Math.min(1.5, size.width / 720));
+
+      setCardSize(() => ({
+        width: SIZE[0] * scaleFactor,
+        height: SIZE[1] * scaleFactor,
+      }));
+    } else if (size.width <= 521) {
+      const scaleFactor = Math.max(0.005, Math.min(1.5, size.width / 640));
+
+      setCardSize(() => ({
+        width: SIZE[0] * scaleFactor,
+        height: SIZE[1] * scaleFactor,
+      }));
+    } else {
+      setCardSize(() => ({
+        width: SIZE[0],
+        height: SIZE[1],
+      }));
+    }
+  }, [size]);
+
   return (
     <UiCard>
       <CardHeader>
         <CardTitle
-          className={"relative flex items-center gap-4 border-b-2 pb-4"}
+          className={
+            "relative flex items-center gap-4 border-b-2 pb-4 animate-in animate-bounce"
+          }
         >
           {nameEdit ? (
             <Input
@@ -172,7 +205,7 @@ export function GroupContainer({
           </div>
         </div>
         <div>
-          <div class={"relative gap-2 p-4 bg-slate-900 mt-2 rounded-2xl"}>
+          <div class={"relative gap-2 p-4 bg-slate-00 mt-2 rounded-2xl"}>
             <div className={"w-full flex flex-col gap-2"}>
               <ColumnsButton groupId={id} columns={columns} />
               <BackgroundColor groupId={id} background={background} />
