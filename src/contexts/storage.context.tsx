@@ -1,4 +1,9 @@
-import React, { PropsWithChildren, useEffect, useState } from "preact/compat";
+import React, {
+  PropsWithChildren,
+  useEffect,
+  useMemo,
+  useState,
+} from "preact/compat";
 import {
   STORAGE_EVENT_KEY,
   StorageEntityType,
@@ -11,6 +16,7 @@ export const StorageContext = React.createContext<StorageEntityType>({
 
 export function StorageProvider({ children }: PropsWithChildren) {
   const [storage, setStorage] = useState<StorageEntityType>(extractStorage());
+  const broadcastChannel = useMemo(() => new BroadcastChannel("app"), []);
 
   useEffect(() => {
     // Load tasks first time and when it changes!
@@ -19,11 +25,18 @@ export function StorageProvider({ children }: PropsWithChildren) {
       setStorage(extractStorage());
     };
 
+    broadcastChannel.onmessage = () => {
+      listener();
+    };
+
     // Load it
     document.addEventListener(STORAGE_EVENT_KEY, listener);
 
     // Unload it
-    return () => document.removeEventListener(STORAGE_EVENT_KEY, listener);
+    return () => {
+      document.removeEventListener(STORAGE_EVENT_KEY, listener);
+      broadcastChannel.close();
+    };
   }, []);
 
   return (

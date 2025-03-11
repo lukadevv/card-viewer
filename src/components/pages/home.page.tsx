@@ -11,6 +11,8 @@ export function HomePage() {
     value: { groups },
   } = useStorage();
 
+  console.log(groups);
+
   return (
     <main>
       <img

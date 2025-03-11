@@ -8,6 +8,13 @@ import {
 import { generateRandomID } from "../../utils/uid";
 import { extractStorage } from "./read";
 
+const broadcastChannel = new BroadcastChannel("app");
+
+function updateEvent() {
+  document.dispatchEvent(new Event(STORAGE_EVENT_KEY));
+  broadcastChannel.postMessage("");
+}
+
 export function addCardsIntoGroup(
   groupId: StorageEntityType["groups"][number]["id"],
   ...cards: CardEntityType[]
@@ -19,7 +26,7 @@ export function addCardsIntoGroup(
   if (!group) {
     return;
   }
-  
+
   // Add cards
   group.cards.push(
     ...cards.map((each) => ({
@@ -31,7 +38,7 @@ export function addCardsIntoGroup(
   localStorage.setItem(STORAGE_KEY, JSON.stringify(storage));
 
   // Fire event for listeners, to re-hydrate components
-  document.dispatchEvent(new Event(STORAGE_EVENT_KEY));
+  updateEvent();
 }
 
 export function removeCardsFromGroup(
@@ -52,7 +59,7 @@ export function removeCardsFromGroup(
   localStorage.setItem(STORAGE_KEY, JSON.stringify(storage));
 
   // Fire event for listeners, to re-hydrate components
-  document.dispatchEvent(new Event(STORAGE_EVENT_KEY));
+  updateEvent();
 }
 
 export function clearCardsFromGroup(
@@ -72,7 +79,7 @@ export function clearCardsFromGroup(
   localStorage.setItem(STORAGE_KEY, JSON.stringify(storage));
 
   // Fire event for listeners, to re-hydrate components
-  document.dispatchEvent(new Event(STORAGE_EVENT_KEY));
+  updateEvent();
 }
 
 export function removeGroup(
@@ -92,7 +99,7 @@ export function removeGroup(
   localStorage.setItem(STORAGE_KEY, JSON.stringify(storage));
 
   // Fire event for listeners, to re-hydrate components
-  document.dispatchEvent(new Event(STORAGE_EVENT_KEY));
+  updateEvent();
 }
 
 export function addCardCounter(
@@ -122,7 +129,28 @@ export function addCardCounter(
   localStorage.setItem(STORAGE_KEY, JSON.stringify(storage));
 
   // Fire event for listeners, to re-hydrate components
-  document.dispatchEvent(new Event(STORAGE_EVENT_KEY));
+  updateEvent();
+}
+
+export function clearCounters(
+  groupId: StorageEntityType["groups"][number]["id"]
+) {
+  const storage = extractStorage();
+
+  let group = storage.groups.find((each) => each.id === groupId);
+
+  if (!group) {
+    return;
+  }
+
+  for (const card of group.cards) {
+    card.count = 0;
+  }
+
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(storage));
+
+  // Fire event for listeners, to re-hydrate components
+  updateEvent();
 }
 
 export function modifyCards(
@@ -142,7 +170,7 @@ export function modifyCards(
   localStorage.setItem(STORAGE_KEY, JSON.stringify(storage));
 
   // Fire event for listeners, to re-hydrate components
-  document.dispatchEvent(new Event(STORAGE_EVENT_KEY));
+  updateEvent();
 }
 
 export function modifyGroupName(
@@ -162,7 +190,7 @@ export function modifyGroupName(
   localStorage.setItem(STORAGE_KEY, JSON.stringify(storage));
 
   // Fire event for listeners, to re-hydrate components
-  document.dispatchEvent(new Event(STORAGE_EVENT_KEY));
+  updateEvent();
 }
 
 export function createGroup() {
@@ -183,7 +211,7 @@ export function createGroup() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(storage));
 
   // Fire event for listeners, to re-hydrate components
-  document.dispatchEvent(new Event(STORAGE_EVENT_KEY));
+  updateEvent();
 }
 
 export function addGroupColumn(
@@ -205,7 +233,7 @@ export function addGroupColumn(
   localStorage.setItem(STORAGE_KEY, JSON.stringify(storage));
 
   // Fire event for listeners, to re-hydrate components
-  document.dispatchEvent(new Event(STORAGE_EVENT_KEY));
+  updateEvent();
 }
 
 export function setGroupBackground(
@@ -225,7 +253,7 @@ export function setGroupBackground(
   localStorage.setItem(STORAGE_KEY, JSON.stringify(storage));
 
   // Fire event for listeners, to re-hydrate components
-  document.dispatchEvent(new Event(STORAGE_EVENT_KEY));
+  updateEvent();
 }
 
 export function setGroupCounterBackground(
@@ -245,7 +273,7 @@ export function setGroupCounterBackground(
   localStorage.setItem(STORAGE_KEY, JSON.stringify(storage));
 
   // Fire event for listeners, to re-hydrate components
-  document.dispatchEvent(new Event(STORAGE_EVENT_KEY));
+  updateEvent();
 }
 
 export function setGroupCounterColor(
@@ -265,5 +293,5 @@ export function setGroupCounterColor(
   localStorage.setItem(STORAGE_KEY, JSON.stringify(storage));
 
   // Fire event for listeners, to re-hydrate components
-  document.dispatchEvent(new Event(STORAGE_EVENT_KEY));
+  updateEvent();
 }

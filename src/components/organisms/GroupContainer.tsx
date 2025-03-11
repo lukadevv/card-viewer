@@ -4,10 +4,17 @@ import {
   StorageCardEntityType,
   StorageEntityType,
 } from "../../models/entities/storage.entity";
-import { useCallback, useEffect, useRef, useState } from "preact/hooks";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "preact/hooks";
 import {
   addCardsIntoGroup,
   addGroupColumn,
+  clearCounters,
   modifyCards,
   modifyGroupName,
   removeCardsFromGroup,
@@ -24,7 +31,7 @@ import {
   CardContent,
   CardFooter,
 } from "../ui/card";
-import { Edit3, PipetteIcon, Trash } from "lucide-react";
+import { Edit3, PipetteIcon, RotateCcw, Trash } from "lucide-react";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { appendUrlPath } from "../../utils/path";
@@ -69,6 +76,13 @@ export function GroupContainer({
     setDrag(false);
     setRemove(false);
   }, [cards]);
+
+  const isAlreadyReset = useMemo(
+    () => cards.every((each) => each.count === 0),
+    [cards]
+  );
+
+  const clear = useCallback(() => clearCounters(id), []);
 
   const addCard = useCallback(
     (card: CardEntityType) => {
@@ -119,13 +133,23 @@ export function GroupContainer({
           ) : (
             <p className={"text-xl"}>{name}</p>
           )}
-          <Button
-            variant={"outline"}
-            onClick={() => setNameEdit(!nameEdit)}
-            aria-label={"Edit name"}
-          >
-            <Edit3 />
-          </Button>
+          <div className={"flex gap-2"}>
+            <Button
+              variant={"outline"}
+              onClick={() => setNameEdit(!nameEdit)}
+              aria-label={"Edit name"}
+            >
+              <Edit3 />
+            </Button>
+            <Button
+              variant={"outline"}
+              onClick={() => clear()}
+              aria-label={"Clear counters"}
+              disabled={isAlreadyReset}
+            >
+              <RotateCcw />
+            </Button>
+          </div>
           <Button
             className={"absolute p-5 h-full"}
             style={{

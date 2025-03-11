@@ -51,11 +51,8 @@ export function CardCounter({
               objectFit: "cover",
               width,
               height,
-              borderRadius: "5px",
             }}
-            className={
-              "border-solid border-2 border-slate-500 pointer-events-none select-none"
-            }
+            className={"border-solid pointer-events-none select-none"}
             alt={"Card image"}
           />
           <div
