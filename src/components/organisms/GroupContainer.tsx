@@ -205,6 +205,7 @@ export function GroupContainer({
                       width,
                       height,
                     },
+                    className: "cursor-grab active:cursor-grabbing"
                   }}
                 />
               ))}

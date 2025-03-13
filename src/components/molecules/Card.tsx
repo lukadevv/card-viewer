@@ -18,9 +18,14 @@ export function Card({
   return (
     <div {...containerProps}>
       <Button
-        className={"m-0 p-0 h-fit hover:opacity-80 relative"}
+        className={
+          "m-0 p-0 h-fit hover:opacity-80 relative cursor-grab active:cursor-grabbing"
+        }
         variant={"ghost"}
         aria-label={"Card"}
+        style={{
+          pointerEvents: "none",
+        }}
       >
         <img
           src={appendUrlPath(iconPath)}
