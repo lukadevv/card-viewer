@@ -90,7 +90,7 @@ const ColorPicker: React.FC<TColorPicker> = ({
       <PopoverTrigger asChild>{children}</PopoverTrigger>
       <PopoverContent align="center" side="top" className="w-[18rem] h-[25rem]">
         <div className="size-full flex flex-col items-center justify-between">
-          <h1 className="font-medium text-xl">Colour Picker</h1>
+          <h1 className="font-medium text-xl">Color Picker</h1>
           <RgbaColorPicker
             color={hexToRgba(color.hex) as any}
             onChange={handleColorChange}
@@ -121,7 +121,7 @@ const ColorPicker: React.FC<TColorPicker> = ({
                 aria-label={"Change color"}
               >
                 <Plus className="h-4 md:h-[1.2vw] aspect-square" />
-                Add New Colour
+                Add New Color
               </Button>
             )}
           </div>
