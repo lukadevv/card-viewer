@@ -2,7 +2,7 @@
 
 **Card Viewer** is an intuitive and efficient **card counter** for Yu-Gi-Oh! Forbidden Memories.  
 
-<a href="https://lukadevv.github.io/card-viewer/">Website - App</a>
+<a href="https://viewer.lukadevv.com">Website - App</a>
 
 ## 🛠️ How to Use  
 1. **Edit Default Group** – Start by modifying the default group or create a new one.  

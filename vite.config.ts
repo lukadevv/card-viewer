@@ -19,12 +19,12 @@ export default defineConfig({
         short_name: "card-viewer",
         icons: [
           {
-            src: "/card-viewer/assets/android-chrome-192x192.png",
+            src: "/assets/android-chrome-192x192.png",
             sizes: "192x192",
             type: "image/png",
           },
           {
-            src: "/card-viewer/assets/android-chrome-512x512.png",
+            src: "/assets/android-chrome-512x512.png",
             sizes: "512x512",
             type: "image/png",
           },
@@ -43,5 +43,4 @@ export default defineConfig({
   server: {
     port: 6969,
   },
-  base: "/card-viewer/",
 });
